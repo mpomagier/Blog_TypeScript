@@ -1,18 +1,22 @@
 {
-  const selectorArticle = ".post";
-  const selectorTitle = ".post-title";
-  const selectorTitleList = ".titles";
-  const selectorArticleTags = ".post-tags .list";
-  const selectorArticleAuthor = ".post-author";
-  const selectorAuthorsList = ".list.authors";
-  const selectorTagsList = ".sidebar .tags";
+  const selectorArticle: string = ".post";
+  const selectorTitle: string = ".post-title";
+  const selectorTitleList: string = ".titles";
+  const selectorArticleTags: string = ".post-tags .list";
+  const selectorArticleAuthor: string = ".post-author";
+  const selectorAuthorsList: string = ".list.authors";
+  const selectorTagsList: string = ".sidebar .tags";
 
-  const titleClickHandler = function (event) {
-    event.preventDefault();
+  const titleClickHandler = function (
+    this: HTMLLinkElement,
+    event: Event
+  ): void {
     const clickedElement = this;
 
     /* find active link and make it inactive */
-    const activeLink = document.querySelector(".titles a.active");
+    const activeLink = document.querySelector(
+      ".titles a.active"
+    ) as HTMLLinkElement;
     if (activeLink) activeLink.classList.remove("active");
 
     /* add active class to clicked link */
@@ -23,8 +27,8 @@
     if (activeArticle) activeArticle.classList.remove("active");
 
     /* find id of article related to clicked link, then find it and show */
-    const hrefAttribute = clickedElement.getAttribute("href");
-    const targetArticle = document.querySelector(hrefAttribute);
+    const hrefAttribute = clickedElement.getAttribute("href") as string;
+    const targetArticle = document.querySelector(hrefAttribute) as HTMLElement;
     if (targetArticle) targetArticle.classList.add("active");
   };
 

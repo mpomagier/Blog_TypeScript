@@ -8,7 +8,6 @@
     const selectorAuthorsList = ".list.authors";
     const selectorTagsList = ".sidebar .tags";
     const titleClickHandler = function (event) {
-        event.preventDefault();
         const clickedElement = this;
         /* find active link and make it inactive */
         const activeLink = document.querySelector(".titles a.active");

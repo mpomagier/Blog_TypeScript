@@ -32,9 +32,12 @@
     if (targetArticle) targetArticle.classList.add("active");
   };
 
-  const generateTitleLinks = (customSelector = "") => {
+  const generateTitleLinks = (customSelector = ""): void => {
     /* find and empty title list */
-    const titleList = document.querySelector(selectorTitleList);
+    const titleList = document.querySelector(
+      selectorTitleList
+    ) as HTMLElement | null;
+    if (!titleList) return;
     titleList.innerHTML = "";
 
     /* prepare variable for storing all the title links */
@@ -44,12 +47,14 @@
     const articles = document.querySelectorAll(
       selectorArticle + customSelector
     );
-    for (let article of articles) {
+    for (let article of Array.from(articles)) {
       /* find id of the article */
       const articleID = article.getAttribute("id");
 
       /* find elem that holds the title and retrieve it */
-      const articleTitle = article.querySelector(selectorTitle).innerHTML;
+      const articleTitle = article.querySelector(
+        selectorTitle
+      ) as HTMLElement | null;
 
       /* create HTML of the link */
       const linkHTML =
@@ -68,26 +73,29 @@
 
     /* find created links and add listeners to them */
     const links = document.querySelectorAll(".titles a");
-    for (let link of links) {
+    for (let link of Array.from(links)) {
       link.addEventListener("click", titleClickHandler);
     }
   };
 
-  const generateTags = () => {
+  const generateTags = (): void => {
     /* create a new array for holding unique tag names */
-    const allTags = [];
+    const allTags: string[] = [];
 
     /* find all articles and loop through */
     const articles = document.querySelectorAll(selectorArticle);
-    for (let article of articles) {
+    for (let article of Array.from(articles)) {
       /* find div for storing tags  */
-      const tagWrapper = article.querySelector(selectorArticleTags);
-
+      const tagWrapper = article.querySelector(
+        selectorArticleTags
+      ) as HTMLElement | null;
+      if (!tagWrapper) continue;
       /* prepare variable for storing all the tag links */
       let html = "";
 
       /* get info about tags from data-tags attribute */
       const dataTag = article.getAttribute("data-tags");
+      if (!dataTag) continue;
 
       /* split tags into array */
       const tagsArray = dataTag.split(" ");
@@ -110,7 +118,10 @@
     }
 
     /* find tags list in sidebar */
-    const tagList = document.querySelector(selectorTagsList);
+    const tagList = document.querySelector(
+      selectorTagsList
+    ) as HTMLElement | null;
+    if (!tagList) return;
 
     /* create variable for all links */
     let allTagsHTML = "";
@@ -124,18 +135,22 @@
     tagList.innerHTML = allTagsHTML;
   };
 
-  const generateAuthors = () => {
+  const generateAuthors = (): void => {
     /* create list of unique authors */
-    let allAuthors = [];
+    let allAuthors: string[] = [];
 
     /* find all articles and loop through */
     const articles = document.querySelectorAll(selectorArticle);
-    for (let article of articles) {
+    for (let article of Array.from(articles)) {
       /* find wrapper for author in article elem */
-      const articleAuthor = article.querySelector(selectorArticleAuthor);
+      const articleAuthor = article.querySelector(
+        selectorArticleAuthor
+      ) as HTMLElement | null;
+      if (!articleAuthor) continue;
 
       /* get article data-author attribute */
       const author = article.getAttribute("data-author");
+      if (!author) continue;
 
       /* check if author is not already in the list, if not -> push it */
       if (!allAuthors.includes(author)) {
@@ -148,7 +163,10 @@
     }
 
     /* find wrapper for author links in sidebar */
-    const authorList = document.querySelector(selectorAuthorsList);
+    const authorList = document.querySelector(
+      selectorAuthorsList
+    ) as HTMLElement | null;
+    if (!authorList) return;
 
     /* loop through unique authors and generate author links in in sidebar*/
     for (let author of allAuthors) {
@@ -159,7 +177,7 @@
     }
   };
 
-  // generate title links, tags and author based on articles */
+  // generate title links, tags and author based on articles
   generateTitleLinks();
   generateTags();
   generateAuthors();

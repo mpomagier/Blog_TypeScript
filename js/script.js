@@ -28,16 +28,18 @@
     const generateTitleLinks = (customSelector = "") => {
         /* find and empty title list */
         const titleList = document.querySelector(selectorTitleList);
+        if (!titleList)
+            return;
         titleList.innerHTML = "";
         /* prepare variable for storing all the title links */
         let html = "";
         /* find all articles and loop through each of them */
         const articles = document.querySelectorAll(selectorArticle + customSelector);
-        for (let article of articles) {
+        for (let article of Array.from(articles)) {
             /* find id of the article */
             const articleID = article.getAttribute("id");
             /* find elem that holds the title and retrieve it */
-            const articleTitle = article.querySelector(selectorTitle).innerHTML;
+            const articleTitle = article.querySelector(selectorTitle);
             /* create HTML of the link */
             const linkHTML = '<li><a href="#' +
                 articleID +
@@ -51,7 +53,7 @@
         titleList.insertAdjacentHTML("afterbegin", html);
         /* find created links and add listeners to them */
         const links = document.querySelectorAll(".titles a");
-        for (let link of links) {
+        for (let link of Array.from(links)) {
             link.addEventListener("click", titleClickHandler);
         }
     };
@@ -60,13 +62,17 @@
         const allTags = [];
         /* find all articles and loop through */
         const articles = document.querySelectorAll(selectorArticle);
-        for (let article of articles) {
+        for (let article of Array.from(articles)) {
             /* find div for storing tags  */
             const tagWrapper = article.querySelector(selectorArticleTags);
+            if (!tagWrapper)
+                continue;
             /* prepare variable for storing all the tag links */
             let html = "";
             /* get info about tags from data-tags attribute */
             const dataTag = article.getAttribute("data-tags");
+            if (!dataTag)
+                continue;
             /* split tags into array */
             const tagsArray = dataTag.split(" ");
             /* loop through tags */
@@ -85,6 +91,8 @@
         }
         /* find tags list in sidebar */
         const tagList = document.querySelector(selectorTagsList);
+        if (!tagList)
+            return;
         /* create variable for all links */
         let allTagsHTML = "";
         /* loop for each tag in unique tags list */
@@ -99,11 +107,15 @@
         let allAuthors = [];
         /* find all articles and loop through */
         const articles = document.querySelectorAll(selectorArticle);
-        for (let article of articles) {
+        for (let article of Array.from(articles)) {
             /* find wrapper for author in article elem */
             const articleAuthor = article.querySelector(selectorArticleAuthor);
+            if (!articleAuthor)
+                continue;
             /* get article data-author attribute */
             const author = article.getAttribute("data-author");
+            if (!author)
+                continue;
             /* check if author is not already in the list, if not -> push it */
             if (!allAuthors.includes(author)) {
                 allAuthors.push(author);
@@ -114,12 +126,14 @@
         }
         /* find wrapper for author links in sidebar */
         const authorList = document.querySelector(selectorAuthorsList);
+        if (!authorList)
+            return;
         /* loop through unique authors and generate author links in in sidebar*/
         for (let author of allAuthors) {
             authorList.insertAdjacentHTML("afterbegin", '<li><a href="#">' + author + "</a></li>");
         }
     };
-    // generate title links, tags and author based on articles */
+    // generate title links, tags and author based on articles
     generateTitleLinks();
     generateTags();
     generateAuthors();
